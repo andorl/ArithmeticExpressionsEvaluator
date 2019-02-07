@@ -1,6 +1,6 @@
 ﻿namespace ArithmeticExpressionsRecognizer
 {
-    class Lexeme
+    public class Lexeme
     {
         public Lexeme(LexemeType type, string text)
         {
@@ -12,7 +12,7 @@
         public string Text { get; }
     }
 
-    enum LexemeType
+    public enum LexemeType
     {
         Plus,
         Minus,

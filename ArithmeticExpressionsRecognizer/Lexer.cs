@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ArithmeticExpressionsRecognizer
 {
-    class Lexer
+    public class Lexer
     {
         private static Dictionary<char, LexemeType> charToTypeMappings = new Dictionary<char, LexemeType>
         {
@@ -61,6 +61,16 @@ namespace ArithmeticExpressionsRecognizer
                                      $"this character: {currentChar}");
         }
 
+        public IEnumerable<Lexeme> EnumerateLexemes()
+        {
+            var lexeme = GetNextLexeme();
+            if (lexeme.Type == LexemeType.Eof)
+            {
+                yield break;
+            }
+
+            yield return lexeme;
+        }
         private int UpdateCurrent()
         {
             current = reader.Read();

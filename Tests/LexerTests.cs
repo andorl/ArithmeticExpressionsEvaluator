@@ -8,19 +8,26 @@ namespace Tests
     [TestFixture]
     public class LexerTests
     {
+        private static object[] sequences =
+        {
+            new object[] { "(2+2)*(-383+(2^7))", "(", "2", "+", "2", ")"},
+        };
+
         [SetUp]
         public void Setup()
         {
 
         }
 
-        [Test]
-        public void Test1()
+        [Test, TestCaseSource(nameof(sequences))]
+        public void ReadExpression_CheckTexts(string expression, params Lexeme[] lexemes)
         {
-            StringReader sr = new StringReader("(2+2)");
+            StringReader sr = new StringReader(expression);
             Lexer lexer = new Lexer(sr);
 
-            CollectionAssert.AreEquivalent(new[]{"(", "2", "+", "2", ")" }, lexer.EnumerateLexemes().Select(lexeme => lexeme.Text));
+            CollectionAssert.AreEqual(lexemes,
+                lexer.EnumerateLexemes().Select(lexeme => lexeme.Text));
         }
+
     }
 }

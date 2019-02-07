@@ -52,8 +52,9 @@ namespace ArithmeticExpressionsRecognizer
 
             if (numberBuilder.Length > 0)
             {
+                var number = numberBuilder.ToString();
                 numberBuilder.Clear();
-                return new Lexeme(LexemeType.Number, numberBuilder.ToString());
+                return new Lexeme(LexemeType.Number, number);
             }
 
             //ни один из вариантов не подошёл -> ошибка
@@ -63,14 +64,12 @@ namespace ArithmeticExpressionsRecognizer
 
         public IEnumerable<Lexeme> EnumerateLexemes()
         {
-            var lexeme = GetNextLexeme();
-            if (lexeme.Type == LexemeType.Eof)
+            for (var lexeme = GetNextLexeme(); lexeme.Type != LexemeType.Eof; lexeme = GetNextLexeme())
             {
-                yield break;
+                yield return lexeme;
             }
-
-            yield return lexeme;
         }
+
         private int UpdateCurrent()
         {
             current = reader.Read();

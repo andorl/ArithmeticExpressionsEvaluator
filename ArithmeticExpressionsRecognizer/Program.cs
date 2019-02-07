@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace ArithmeticExpressionsRecognizer
 {
@@ -6,7 +7,7 @@ namespace ArithmeticExpressionsRecognizer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+
         }
     }
 }

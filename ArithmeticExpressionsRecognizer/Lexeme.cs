@@ -1,4 +1,6 @@
-﻿namespace ArithmeticExpressionsRecognizer
+﻿using System;
+
+namespace ArithmeticExpressionsRecognizer
 {
     public class Lexeme
     {
@@ -10,6 +12,18 @@
 
         public LexemeType Type { get; }
         public string Text { get; }
+
+        public override bool Equals(object another)
+        {
+            return another is Lexeme lexeme &&
+                   Type == lexeme.Type &&
+                   Text == lexeme.Text;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, Text);
+        }
     }
 
     public enum LexemeType

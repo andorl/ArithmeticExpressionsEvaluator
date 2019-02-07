@@ -8,26 +8,65 @@ namespace Tests
     [TestFixture]
     public class LexerTests
     {
-        private static object[] sequences =
+        private static readonly object[][] correct =
         {
-            new object[] { "(2+2)*(-383+(2^7))", "(", "2", "+", "2", ")"},
+           new object[]
+            {
+                "(2+2)^(-30/5)",
+                new []
+                {
+                    new Lexeme(LexemeType.OpeningBracket, "("),
+                    new Lexeme(LexemeType.Number, "2"),
+                    new Lexeme(LexemeType.Plus, "+"),
+                    new Lexeme(LexemeType.Number, "2"),
+                    new Lexeme(LexemeType.ClosingBracket, ")"),
+                    new Lexeme(LexemeType.Power, "^"),
+                    new Lexeme(LexemeType.OpeningBracket, "("),
+                    new Lexeme(LexemeType.Minus, "-"),
+                    new Lexeme(LexemeType.Number, "30"),
+                    new Lexeme(LexemeType.Divide, "/"),
+                    new Lexeme(LexemeType.Number, "5"),
+                    new Lexeme(LexemeType.ClosingBracket, ")"),
+                }
+            },
+
+            new object[]
+            {
+                "4+(43/20)*(-383+(2^7))",
+                new []
+                {
+                    new Lexeme(LexemeType.Number, "4"),
+                    new Lexeme(LexemeType.Plus, "+"),
+                    new Lexeme(LexemeType.OpeningBracket, "("),
+                    new Lexeme(LexemeType.Number, "43"),
+                    new Lexeme(LexemeType.Divide, "/"),
+                    new Lexeme(LexemeType.Number, "20"),
+                    new Lexeme(LexemeType.ClosingBracket, ")"),
+                    new Lexeme(LexemeType.Multiply, "*"),
+                    new Lexeme(LexemeType.OpeningBracket, "("),
+                    new Lexeme(LexemeType.Minus, "-"),
+                    new Lexeme(LexemeType.Number, "383"),
+                    new Lexeme(LexemeType.Plus, "+"),
+                    new Lexeme(LexemeType.OpeningBracket, "("),
+                    new Lexeme(LexemeType.Number, "2"),
+                    new Lexeme(LexemeType.Power, "^"),
+                    new Lexeme(LexemeType.Number, "7"),
+                    new Lexeme(LexemeType.ClosingBracket, ")"),
+                    new Lexeme(LexemeType.ClosingBracket, ")"),
+                }
+            },
+
         };
 
-        [SetUp]
-        public void Setup()
+        [Test]
+        [TestCaseSource(nameof(correct))]
+        public void ReadExpression_SuccessOnCorrect(string expression, Lexeme[] expected)
         {
+            var reader = new StringReader(expression);
+            var lexer = new Lexer(reader);
 
+            var actual = lexer.EnumerateLexemes().ToArray();
+            CollectionAssert.AreEqual(expected, actual);
         }
-
-        [Test, TestCaseSource(nameof(sequences))]
-        public void ReadExpression_CheckTexts(string expression, params Lexeme[] lexemes)
-        {
-            StringReader sr = new StringReader(expression);
-            Lexer lexer = new Lexer(sr);
-
-            CollectionAssert.AreEqual(lexemes,
-                lexer.EnumerateLexemes().Select(lexeme => lexeme.Text));
-        }
-
     }
 }

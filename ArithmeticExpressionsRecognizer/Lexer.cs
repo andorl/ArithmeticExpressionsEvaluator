@@ -17,19 +17,13 @@ namespace ArithmeticExpressionsRecognizer
             [')'] = LexemeType.ClosingBracket,
         };
 
-        private StreamReader reader;
+        private readonly TextReader reader;
         private int current;
 
-        public Lexer(StreamReader reader)
+        public Lexer(TextReader reader)
         {
             this.reader = reader;
             UpdateCurrent();
-        }
-
-        private int UpdateCurrent()
-        {
-            current = reader.Read();
-            return current;
         }
 
         public Lexeme GetNextLexeme()
@@ -66,6 +60,12 @@ namespace ArithmeticExpressionsRecognizer
             throw new LexerException("Arithmetic expressions can't contain " +
                                      $"this character: {currentChar}");
         }
+
+        private int UpdateCurrent()
+        {
+            current = reader.Read();
+            return current;
+        }
+
     }
-}
 }

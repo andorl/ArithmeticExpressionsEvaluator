@@ -6,7 +6,7 @@ namespace ArithmeticExpressionsRecognizer
 {
     public class Lexer
     {
-        private static Dictionary<char, LexemeType> charToTypeMappings = new Dictionary<char, LexemeType>
+        private static readonly Dictionary<char, LexemeType> charToTypeMappings = new Dictionary<char, LexemeType>
         {
             ['+'] = LexemeType.Plus,
             ['-'] = LexemeType.Minus,

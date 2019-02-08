@@ -46,7 +46,7 @@ namespace ArithmeticExpressionsRecognizer
             return temp;
         }
 
-        public int ParseTerm()
+        private int ParseTerm()
         {
             int temp = ParseFactor();
             while (current.Type == LexemeType.Multiply || current.Type == LexemeType.Divide)
@@ -62,16 +62,15 @@ namespace ArithmeticExpressionsRecognizer
                 }
             }
 
-            UpdateCurrent();
+            //UpdateCurrent();
             return temp;
         }
 
-        public int ParseFactor()
+        private int ParseFactor()
         {
             int temp = ParsePower();
             if (current.Type == LexemeType.Power)
             {
-                UpdateCurrent();
                 return (int) Math.Pow(temp, ParseFactor());
             }
             else
@@ -80,8 +79,9 @@ namespace ArithmeticExpressionsRecognizer
             }
         }
 
-        public int ParsePower()
+        private int ParsePower()
         {
+            UpdateCurrent();
             if (current.Type == LexemeType.Minus)
             {
                 UpdateCurrent();
@@ -95,11 +95,10 @@ namespace ArithmeticExpressionsRecognizer
 
         }
 
-        public int ParseAtom()
+        private int ParseAtom()
         {
             if (current.Type == LexemeType.OpeningBracket)
             {
-                UpdateCurrent();
                 int temp = ParseExpression();
                 if (current.Type != LexemeType.ClosingBracket)
                 {
@@ -111,7 +110,8 @@ namespace ArithmeticExpressionsRecognizer
             }
             else if (current.Type == LexemeType.Number)
             {
-                return int.Parse(current.Text);
+                int number = int.Parse(current.Text);
+                return number;
             }
 
             else

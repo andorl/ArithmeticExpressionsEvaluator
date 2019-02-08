@@ -58,8 +58,7 @@ namespace ArithmeticExpressionsRecognizer
             }
 
             //ни один из вариантов не подошёл -> ошибка
-            throw new LexerException("Arithmetic expressions can't contain " +
-                                     $"this character: {currentChar}");
+            throw new LexerException(currentChar);
         }
 
         public IEnumerable<Lexeme> EnumerateLexemes()

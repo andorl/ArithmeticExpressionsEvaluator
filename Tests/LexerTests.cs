@@ -132,6 +132,7 @@ namespace Tests
             var lexer = new Lexer(reader);
 
             var exception = Assert.Throws<LexerException>(() => lexer.EnumerateLexemes().ToArray());
+
             Assert.AreEqual(exception.CharCaused, expectedCharCaused);
         }
     }

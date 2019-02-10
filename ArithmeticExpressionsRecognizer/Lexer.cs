@@ -36,6 +36,12 @@ namespace ArithmeticExpressionsRecognizer
 
             var currentChar = (char) current;
 
+            if (char.IsWhiteSpace(currentChar))
+            {
+                UpdateCurrent();
+                return GetNextLexeme();
+            }
+
             if (charToTypeMappings.ContainsKey(currentChar))
             {
                 UpdateCurrent();
@@ -58,7 +64,7 @@ namespace ArithmeticExpressionsRecognizer
             }
 
             //ни один из вариантов не подошёл -> ошибка
-            throw new LexerException(currentChar);
+            throw new LexerException(currentChar, TODO);
         }
 
         public IEnumerable<Lexeme> EnumerateLexemes()

@@ -20,6 +20,7 @@ namespace ArithmeticExpressionsRecognizer
         public Parser(Lexer lexer)
         {
             this.lexer = lexer;
+            UpdateCurrent();
         }
 
 
@@ -31,38 +32,45 @@ namespace ArithmeticExpressionsRecognizer
             int temp = ParseTerm();
             while (current.Type == LexemeType.Plus || current.Type == LexemeType.Minus)
             {
-                if (current.Type == LexemeType.Plus)
+                var operationType = current.Type;
+                UpdateCurrent();
+
+                if (operationType == LexemeType.Plus)
                 {
                     temp += ParseTerm();
                 }
 
-                else if (current.Type == LexemeType.Minus)
+                else if (operationType == LexemeType.Minus)
                 {
                     temp -= ParseTerm();
                 }
+
             }
 
-            UpdateCurrent();
             return temp;
         }
 
         private int ParseTerm()
         {
             int temp = ParseFactor();
+
             while (current.Type == LexemeType.Multiply || current.Type == LexemeType.Divide)
             {
-                if (current.Type == LexemeType.Multiply)
+                var operationType = current.Type;
+                UpdateCurrent();
+
+                if (operationType == LexemeType.Multiply)
                 {
                     temp *= ParseFactor();
                 }
 
-                else if (current.Type == LexemeType.Divide)
+                else if (operationType == LexemeType.Divide)
                 {
                     temp /= ParseFactor();
                 }
+
             }
 
-            //UpdateCurrent();
             return temp;
         }
 
@@ -71,6 +79,7 @@ namespace ArithmeticExpressionsRecognizer
             int temp = ParsePower();
             if (current.Type == LexemeType.Power)
             {
+                UpdateCurrent();
                 return (int) Math.Pow(temp, ParseFactor());
             }
             else
@@ -81,7 +90,6 @@ namespace ArithmeticExpressionsRecognizer
 
         private int ParsePower()
         {
-            UpdateCurrent();
             if (current.Type == LexemeType.Minus)
             {
                 UpdateCurrent();
@@ -99,18 +107,20 @@ namespace ArithmeticExpressionsRecognizer
         {
             if (current.Type == LexemeType.OpeningBracket)
             {
+                UpdateCurrent();
                 int temp = ParseExpression();
                 if (current.Type != LexemeType.ClosingBracket)
                 {
                     throw new ParserException();
                 }
-
                 UpdateCurrent();
                 return temp;
             }
             else if (current.Type == LexemeType.Number)
             {
                 int number = int.Parse(current.Text);
+
+                UpdateCurrent();
                 return number;
             }
 

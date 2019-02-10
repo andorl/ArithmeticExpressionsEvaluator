@@ -4,12 +4,13 @@ namespace ArithmeticExpressionsRecognizer
 {
     public class LexerException : Exception
     {
-        public LexerException(char charCaused) 
-            : base($"Arithmetic expressions can't contain this character: {charCaused}")
+        public LexerException(char charCaused, int position) 
+            : base($"Found illegal character '{charCaused}'  on  position {position}!")
         {
             CharCaused = charCaused;
         }
 
         public char CharCaused { get; }
+        public int Position { get;  }
     }
 }

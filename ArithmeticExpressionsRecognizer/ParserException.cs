@@ -11,6 +11,7 @@ namespace ArithmeticExpressionsRecognizer
             Position = position;
         }
 
+
         public ParserException(char charCaused, LexerException innerException)
             : base(innerException.Message, innerException)
         {

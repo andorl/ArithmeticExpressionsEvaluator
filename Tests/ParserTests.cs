@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using ArithmeticExpressionsRecognizer;
 using NUnit.Framework;
 
@@ -167,19 +168,28 @@ namespace Tests
             Assert.That(parserException.InnerException, Is.TypeOf<LexerException>());
         }
 
-        [TestCase("(0", char.MinValue)]
-        [TestCase("--2", 'H')]
+        [TestCase("(-4", char.MinValue)]
+        [TestCase("-+2", '+')]
         [TestCase("+3-1", '+')]
         [TestCase(")", ')')]
         [TestCase("8*+7", '+')]
         public static void ExceptionOnIncorrect_InvalidCombinations(string expression, char expectedCharCaused)
         {
             var parserException = Assert.Throws<ParserException>(() => new Parser(expression).ParseExpression());
-
+            
             Assert.AreEqual(expectedCharCaused, parserException.CharCaused);
-            Assert.AreEqual(expression.IndexOf(expectedCharCaused), parserException.Position);
 
-            Assert.That(parserException, Has.No.InnerException);
+            if (expectedCharCaused == char.MinValue)
+            {
+                Assert.AreEqual(expression.Length - 1, parserException.Position);
+            }
+
+            else
+            {
+                Assert.AreEqual(expression.IndexOf(expectedCharCaused), parserException.Position);
+            }
+
+            Assert.That(parserException.InnerException, Is.Null);
         }
 
         private static void Assert_ExpressionHasResult(string expression, int expectedResult)

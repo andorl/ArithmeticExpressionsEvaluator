@@ -6,6 +6,9 @@ namespace ArithmeticExpressionsRecognizer
 {
     public class Lexer
     {
+        public int CurrentIndex => currentIndex;
+        public char CurrentChar => (char)current;
+
         private static readonly Dictionary<char, LexemeType> charToTypeMappings = new Dictionary<char, LexemeType>
         {
             ['+'] = LexemeType.Plus,
@@ -17,8 +20,10 @@ namespace ArithmeticExpressionsRecognizer
             [')'] = LexemeType.ClosingBracket,
         };
 
-        private readonly TextReader reader;
+        private readonly TextReader reader; 
         private int current;
+        private int currentIndex = -1;
+
 
         public Lexer(TextReader reader)
         {
@@ -26,11 +31,12 @@ namespace ArithmeticExpressionsRecognizer
             UpdateCurrent();
         }
 
+
         public Lexeme GetNextLexeme()
         {
             if (current == -1)
             {
-                return new Lexeme(LexemeType.Eof, "");
+                return new Lexeme(LexemeType.Eof, char.MinValue.ToString());
             }
 
 
@@ -64,7 +70,7 @@ namespace ArithmeticExpressionsRecognizer
             }
 
             //ни один из вариантов не подошёл -> ошибка
-            throw new LexerException(currentChar, TODO);
+            throw new LexerException(currentChar, currentIndex);
         }
 
         public IEnumerable<Lexeme> EnumerateLexemes()
@@ -78,6 +84,7 @@ namespace ArithmeticExpressionsRecognizer
         private int UpdateCurrent()
         {
             current = reader.Read();
+            currentIndex++;
             return current;
         }
 

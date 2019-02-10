@@ -8,6 +8,7 @@ namespace ArithmeticExpressionsRecognizer
             : base($"Found illegal character '{charCaused}'  on  position {position}!")
         {
             CharCaused = charCaused;
+            Position = position;
         }
 
         public char CharCaused { get; }

@@ -24,8 +24,11 @@ namespace ArithmeticExpressionsRecognizer
         }
 
 
-        public Parser(string expression) 
-            : this(new Lexer(new StringReader(expression))) { }
+        public Parser(string expression)
+            : this(new Lexer(new StringReader(expression)))
+        {
+
+        }
 
         public int ParseExpression()
         {
@@ -44,7 +47,6 @@ namespace ArithmeticExpressionsRecognizer
                 {
                     temp -= ParseTerm();
                 }
-
             }
 
             return temp;
@@ -111,7 +113,7 @@ namespace ArithmeticExpressionsRecognizer
                 int temp = ParseExpression();
                 if (current.Type != LexemeType.ClosingBracket)
                 {
-                    throw new ParserException();
+                    throw new ParserException(current.Text[0], lexer.CurrentIndex - 1);
                 }
                 UpdateCurrent();
                 return temp;
@@ -126,14 +128,21 @@ namespace ArithmeticExpressionsRecognizer
 
             else
             {
-                throw new ParserException();
+                throw new ParserException(current.Text[0], lexer.CurrentIndex - 1);
             }
         }
 
-        private Lexeme UpdateCurrent()
+        private void UpdateCurrent()
         {
-            current = lexer.GetNextLexeme();
-            return current;
+            try
+            {
+                current = lexer.GetNextLexeme();
+            }
+
+            catch (LexerException le)
+            {
+                throw new ParserException(lexer.CurrentChar, le);
+            }
         }
     }
 }

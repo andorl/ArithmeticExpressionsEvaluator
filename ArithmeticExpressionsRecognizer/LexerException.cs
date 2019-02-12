@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ArithmeticExpressionsRecognizer
+namespace ArithmeticExpressionsEvaluator
 {
     public class LexerException : Exception
     {

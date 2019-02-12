@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace ArithmeticExpressionsRecognizer
+namespace ArithmeticExpressionsEvaluator
 {
     public class Lexer
     {

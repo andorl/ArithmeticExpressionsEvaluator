@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ArithmeticExpressionsRecognizer
+namespace ArithmeticExpressionsEvaluator
 {
     /*  
         expr -> term +|- term +|- term +|- ...

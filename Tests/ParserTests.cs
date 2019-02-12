@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ArithmeticExpressionsRecognizer;
+using ArithmeticExpressionsEvaluator;
 using NUnit.Framework;
 
 namespace Tests

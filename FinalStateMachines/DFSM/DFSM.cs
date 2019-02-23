@@ -12,8 +12,6 @@ namespace FinalStateMachines
         private readonly Dictionary<State, Dictionary<char, State>> transitions
             = new Dictionary<int, Dictionary<char, State>>();
 
-        private readonly HashSet<State> finalStates;
-
         public DFSM(string source) : this(new StringReader(source))
         {
 
@@ -39,8 +37,6 @@ namespace FinalStateMachines
 
         }
 
-        public State InitialState => 0;
-
         public override bool Recognize(string word) => IsFinalState(GetLastState(word));
 
         private State GetLastState(string word)
@@ -53,7 +49,5 @@ namespace FinalStateMachines
 
             return currentState;
         }
-
-        private bool IsFinalState(State state) => finalStates.Contains(state);
     }
 }

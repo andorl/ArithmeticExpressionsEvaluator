@@ -31,6 +31,9 @@ namespace FinalStateMachines
                 if (!transitions.ContainsKey(qstart))
                     transitions[qstart] = new Dictionary<char, List<State>>();
 
+                if (!transitions[qstart].ContainsKey(symbol))
+                    transitions[qstart][symbol] = new List<State>();
+
                 transitions[qstart][symbol].Add(qend);
             }
         }
@@ -63,11 +66,19 @@ namespace FinalStateMachines
                 }
                 var nextSymbol = word[currentTape.Length];
 
-                var statesAvaliableForMove = transitions[currentState][nextSymbol];
+                List<int> statesAvaliableForMove = new List<int>();
+                try
+                {
+                    statesAvaliableForMove.AddRange(transitions[currentState][nextSymbol]);
+                }
+                catch
+                {
+                    // список останется пустым
+                }
+
                 var tapeOnNextMove = currentTape + nextSymbol;
 
-                var newUnvisitedConfig = statesAvaliableForMove
-                    .Select(stateToMove => new Configuration(tapeOnNextMove, stateToMove))
+                var newUnvisitedConfig = new List<int>().Select(stateToMove => new Configuration(tapeOnNextMove, stateToMove))
                     .FirstOrDefault(config => !visitedConfigs.Contains(config));
 
                 if (newUnvisitedConfig != null)

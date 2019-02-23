@@ -7,10 +7,10 @@ namespace FinalStateMachines
 {
     using State = Int32;
 
-    public class DFSM : IFinalStateMachine
+    public class DFSM : FinalStateMachine
     {
-        private Dictionary<State, Dictionary<char, State>> transitions
-            = new Dictionary<int, Dictionary<char, int>>();
+        private readonly Dictionary<State, Dictionary<char, State>> transitions
+            = new Dictionary<int, Dictionary<char, State>>();
 
         private readonly HashSet<State> finalStates;
 
@@ -32,7 +32,7 @@ namespace FinalStateMachines
                 var qend = int.Parse(split[2]);
 
                 if (!transitions.ContainsKey(qstart))
-                    transitions[qstart] = new Dictionary<char, int>();
+                    transitions[qstart] = new Dictionary<char, State>();
 
                 transitions[qstart][symbol] = qend;
             }
@@ -41,7 +41,7 @@ namespace FinalStateMachines
 
         public State InitialState => 0;
 
-        public bool Solve(string word) => IsFinalState(GetLastState(word));
+        public override bool Recognize(string word) => IsFinalState(GetLastState(word));
 
         private State GetLastState(string word)
         {
